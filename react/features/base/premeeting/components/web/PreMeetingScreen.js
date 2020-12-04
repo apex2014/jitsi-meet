@@ -2,8 +2,10 @@
 
 import React, { PureComponent } from 'react';
 
-import { AudioSettingsButton, VideoSettingsButton } from '../../../../toolbox';
+import { AudioSettingsButton, VideoSettingsButton } from '../../../../toolbox/components/web';
+import { Avatar } from '../../../avatar';
 
+import ConnectionStatus from './ConnectionStatus';
 import CopyMeetingUrl from './CopyMeetingUrl';
 import Preview from './Preview';
 
@@ -38,6 +40,11 @@ type Props = {
      * Title of the screen.
      */
     title: string,
+
+    /**
+     * The 'Skip prejoin' button to be rendered (if any).
+     */
+     skipPrejoinButton?: React$Node,
 
     /**
      * True if the preview overlay should be muted, false otherwise.
@@ -77,13 +84,20 @@ export default class PreMeetingScreen extends PureComponent<Props> {
             <div
                 className = 'premeeting-screen'
                 id = 'lobby-screen'>
+                <ConnectionStatus />
                 <Preview
-                    name = { name }
-                    showAvatar = { showAvatar }
                     videoMuted = { videoMuted }
                     videoTrack = { videoTrack } />
                 {!videoMuted && <div className = 'preview-overlay' />}
                 <div className = 'content'>
+                    {showAvatar && videoMuted && (
+                        <Avatar
+                            className = 'premeeting-screen-avatar'
+                            displayName = { name }
+                            dynamicColor = { false }
+                            participantId = 'local'
+                            size = { 80 } />
+                    )}
                     {showConferenceInfo && (
                         <>
                             <div className = 'title'>
@@ -97,6 +111,7 @@ export default class PreMeetingScreen extends PureComponent<Props> {
                         <AudioSettingsButton visible = { true } />
                         <VideoSettingsButton visible = { true } />
                     </div>
+                    { this.props.skipPrejoinButton }
                     { this.props.footer }
                 </div>
             </div>

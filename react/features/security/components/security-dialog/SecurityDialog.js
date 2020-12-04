@@ -125,13 +125,15 @@ function mapStateToProps(state) {
         locked,
         password
     } = state['features/base/conference'];
+    const { roomPasswordNumberOfDigits } = state['features/base/config'];
 
     return {
-        _canEditPassword: isLocalParticipantModerator(state, state['features/base/config'].lockRoomGuestEnabled),
+        _canEditPassword: isLocalParticipantModerator(state),
         _conference: conference,
         _dialIn: state['features/invite'],
         _locked: locked,
         _password: password,
+        _passwordNumberOfDigits: roomPasswordNumberOfDigits,
         _showE2ee: Boolean(e2eeSupported)
     };
 }
